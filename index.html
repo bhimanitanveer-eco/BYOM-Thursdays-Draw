@@ -1,220 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>BYOM Thursday Raffle 🌱</title>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: #1f4d3a;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-}
-h1 {
-    color: #e8f5e9;
-}
-textarea {
-    width: 80%;
-    height: 120px;
-    margin: 10px;
-}
-button {
-    padding: 10px 20px;
-    margin: 10px;
-    font-size: 16px;
-    background: #3a7d5d;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-button:hover {
-    background: #2a5d4d;
-}
-button:disabled {
-    background: #666;
-    cursor: not-allowed;
-}
-
-/* Wheel Styles */
-.wheel-container {
-    margin: 30px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    height: 350px;
-}
-
-.wheel {
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    position: relative;
-    transition: transform 0.1s linear;
-}
-
-.wheel.spinning {
-    animation: spin 0.05s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.wheel-segment {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    clip-path: polygon(50% 50%, 50% 0%, 100% 0%);
-}
-
-/* Pointer at top */
-.pointer {
-    position: absolute;
-    top: -15px;
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 20px solid #ffd54f;
-    z-index: 10;
-}
-
-#winner {
-    font-size: 28px;
-    margin-top: 20px;
-    color: #ffd54f;
-    min-height: 40px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinning Wheel</title>
+    <style>
+        #wheel {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            transform: rotate(0deg);
+            transition: transform 4s ease-out;
+        }
+        .segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            background: transparent;
+            border: 2px solid #000;
+            clip-path: polygon(100% 0%, 0% 100%, 100% 100%);
+        }
+        #spinButton {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
+    <h1>Spinning Wheel</h1>
+    <div id="wheel"></div>
+    <button id="spinButton">Spin</button>
 
-<h1>BYOM Thursday Raffle 🌱☕</h1>
+    <script>
+        const segments = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve', 'Frank'];
+        const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFC300', '#DAF7A6'];
+        const wheel = document.getElementById('wheel');
 
-<p>Paste names OR upload a CSV file</p>
+        // Create segments
+        segments.forEach((name, index) => {
+            const segment = document.createElement('div');
+            segment.className = 'segment';
+            segment.style.transform = `rotate(${index * (360 / segments.length)}deg)`;
+            segment.style.backgroundColor = colors[index];
+            wheel.appendChild(segment);
+        });
 
-<textarea id="names" placeholder="One name per line..."></textarea><br>
-
-<input type="file" id="csvFile" accept=".csv"><br>
-
-<button onclick="loadCSV()">Upload CSV</button>
-<button onclick="spin()" id="spinBtn">Spin 🎡</button>
-
-<!-- Wheel -->
-<div class="wheel-container">
-    <div class="pointer"></div>
-    <div class="wheel" id="wheel"></div>
-</div>
-
-<div id="winner"></div>
-
-<script>
-let names = [];
-let isSpinning = false;
-const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#a29bfe', '#fd79a8', '#fdcb6e', '#6c7a89', '#74b9ff'];
-
-function loadCSV() {
-    const file = document.getElementById('csvFile').files[0];
-    if (!file) return alert("Upload a CSV first");
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const lines = e.target.result.split('\n');
-        names = lines.map(l => l.trim()).filter(l => l);
-        document.getElementById("names").value = names.join("\n");
-        buildWheel();
-        alert("CSV loaded!");
-    };
-    reader.readAsText(file);
-}
-
-function buildWheel() {
-    const input = document.getElementById("names").value;
-    names = input.split("\n").map(n => n.trim()).filter(n => n);
-    
-    if (names.length === 0) return;
-    
-    const wheel = document.getElementById("wheel");
-    wheel.innerHTML = "";
-    
-    const segmentAngle = 360 / names.length;
-    
-    names.forEach((name, index) => {
-        const segment = document.createElement("div");
-        segment.className = "wheel-segment";
-        segment.textContent = name;
-        segment.style.background = colors[index % colors.length];
-        segment.style.transform = `rotate(${index * segmentAngle}deg)`;
-        segment.style.clip = `polygon(50% 50%, ${50 + 50 * Math.cos((index * segmentAngle - 90) * Math.PI / 180)}% ${50 + 50 * Math.sin((index * segmentAngle - 90) * Math.PI / 180)}%, ${50 + 50 * Math.cos(((index + 1) * segmentAngle - 90) * Math.PI / 180)}% ${50 + 50 * Math.sin(((index + 1) * segmentAngle - 90) * Math.PI / 180)}%)`;
-        wheel.appendChild(segment);
-    });
-}
-
-function spin() {
-    const input = document.getElementById("names").value;
-    names = input.split("\n").map(n => n.trim()).filter(n => n);
-
-    if (names.length === 0) {
-        alert("Add names first!");
-        return;
-    }
-
-    if (isSpinning) return;
-    
-    isSpinning = true;
-    document.getElementById("spinBtn").disabled = true;
-    buildWheel();
-    
-    const wheel = document.getElementById("wheel");
-    wheel.classList.add("spinning");
-    
-    // Spin for 3 seconds
-    const spinDuration = 3000;
-    const startTime = Date.now();
-    
-    const spinInterval = setInterval(() => {
-        const elapsed = Date.now() - startTime;
-        const rotation = (elapsed / 30) % 360;
-        wheel.style.transform = `rotate(${rotation}deg)`;
-        
-        if (elapsed >= spinDuration) {
-            clearInterval(spinInterval);
-            wheel.classList.remove("spinning");
-            
-            // Pick a winner
-            const winnerIndex = Math.floor(Math.random() * names.length);
-            const segmentAngle = 360 / names.length;
-            const finalRotation = (360 * 10 + (names.length - winnerIndex) * segmentAngle) % 360;
-            
-            wheel.style.transform = `rotate(${finalRotation}deg)`;
-            document.getElementById("winner").innerText = `🎉 Winner: ${names[winnerIndex]} 🎉`;
-            
-            isSpinning = false;
-            document.getElementById("spinBtn").disabled = false;
-        }
-    }, 30);
-}
-
-// Build wheel on page load
-buildWheel();
-</script>
-
+        document.getElementById('spinButton').addEventListener('click', () => {
+            const randomDeg = Math.floor(Math.random() * 360 + 360 * 5); // Spin at least 5 full turns
+            wheel.style.transform = `rotate(${randomDeg}deg)`;
+        });
+    </script>
 </body>
 </html>
