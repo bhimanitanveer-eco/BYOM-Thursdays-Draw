@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BYOM Thursday Raffle 🌱</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #1f4d3a;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+h1 {
+    color: #e8f5e9;
+}
+textarea {
+    width: 80%;
+    height: 120px;
+    margin: 10px;
+}
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    background: #3a7d5d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+#winner {
+    font-size: 28px;
+    margin-top: 20px;
+    color: #ffd54f;
+}
+</style>
+</head>
+<body>
+
+<h1>BYOM Thursday Raffle 🌱☕</h1>
+
+<p>Paste names OR upload a CSV file</p>
+
+<textarea id="names" placeholder="One name per line..."></textarea><br>
+
+<input type="file" id="csvFile" accept=".csv"><br>
+
+<button onclick="loadCSV()">Upload CSV</button>
+<button onclick="spin()">Spin 🎡</button>
+
+<div id="winner"></div>
+
+<script>
+let names = [];
+
+function loadCSV() {
+    const file = document.getElementById('csvFile').files[0];
+    if (!file) return alert("Upload a CSV first");
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const lines = e.target.result.split('\n');
+        names = lines.map(l => l.trim()).filter(l => l);
+        document.getElementById("names").value = names.join("\n");
+        alert("CSV loaded!");
+    };
+    reader.readAsText(file);
+}
+
+function spin() {
+    const input = document.getElementById("names").value;
+    names = input.split("\n").map(n => n.trim()).filter(n => n);
+
+    if (names.length === 0) {
+        alert("Add names first!");
+        return;
+    }
+
+    let count = 0;
+    const interval = setInterval(() => {
+        const rand = Math.floor(Math.random() * names.length);
+        document.getElementById("winner").innerText = names[rand];
+        count++;
+        if (count > 20) {
+            clearInterval(interval);
+        }
+    }, 100);
+}
+</script>
+
+</body>
+</html>
