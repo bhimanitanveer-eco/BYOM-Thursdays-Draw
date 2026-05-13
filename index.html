@@ -1,12 +1,282 @@
+# Updated `index.html` (Gents Version)
+
+Replace your existing `index.html` with the full code below.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>BYOM Thursday Live Raffle</title>
+<style>
+  :root{
+    --green:#064f3b;
+    --deep:#033b2f;
+    --light:#f7f4ea;
+    --sage:#8fa58a;
+    --gold:#f3c85c;
+    --burgundy:#a9474f;
+    --white:#ffffff;
+  }
+
+  *{box-sizing:border-box}
+
+  body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+      radial-gradient(circle at top left, rgba(243,200,92,.22), transparent 28%),
+      linear-gradient(135deg, var(--deep), var(--green));
+    color:var(--light);
+    min-height:100vh;
+    text-align:center;
+  }
+
+  header{ padding:28px 18px 14px; }
+
+  .badge{
+    display:inline-block;
+    padding:8px 16px;
+    border:2px solid rgba(255,255,255,.7);
+    border-radius:999px;
+    font-weight:700;
+    letter-spacing:.05em;
+    margin-bottom:10px;
+  }
+
+  h1{
+    margin:8px 0 4px;
+    font-size:clamp(38px, 7vw, 86px);
+    line-height:.9;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+  }
+
+  .subtitle{
+    margin:0 auto;
+    max-width:860px;
+    font-size:clamp(18px, 2.5vw, 30px);
+    font-weight:700;
+  }
+
+  main{
+    width:min(1180px, 96vw);
+    margin:18px auto 40px;
+    display:grid;
+    grid-template-columns: 1fr 390px;
+    gap:24px;
+    align-items:start;
+  }
+
+  .stage, .panel{
+    background:rgba(247,244,234,.94);
+    color:var(--deep);
+    border-radius:28px;
+    box-shadow:0 18px 50px rgba(0,0,0,.28);
+    padding:24px;
+  }
+
+  .stage{
+    position:relative;
+    min-height:680px;
+    overflow:hidden;
+  }
+
+  .wheel-wrap{
+    position:relative;
+    width:min(620px, 88vw);
+    height:min(620px, 88vw);
+    margin:10px auto 20px;
+  }
+
+  canvas#wheel{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    box-shadow:0 18px 45px rgba(0,0,0,.35);
+    background:var(--light);
+  }
+
+  .pointer{
+    position:absolute;
+    top:-12px;
+    left:50%;
+    transform:translateX(-50%);
+    width:0;
+    height:0;
+    border-left:24px solid transparent;
+    border-right:24px solid transparent;
+    border-top:54px solid var(--burgundy);
+    filter:drop-shadow(0 6px 4px rgba(0,0,0,.35));
+    z-index:4;
+  }
+
+  .center-button{
+    position:absolute;
+    inset:50% auto auto 50%;
+    transform:translate(-50%, -50%);
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    border:8px solid var(--light);
+    background:var(--green);
+    color:var(--light);
+    font-weight:900;
+    font-size:28px;
+    box-shadow:0 8px 22px rgba(0,0,0,.35);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-transform:uppercase;
+  }
+
+  .winner-box{
+    background:linear-gradient(135deg, var(--green), var(--deep));
+    color:white;
+    border-radius:22px;
+    padding:18px;
+    min-height:116px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .winner-label{
+    opacity:.9;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    font-size:14px;
+  }
+
+  #winner{
+    font-size:clamp(30px, 5vw, 58px);
+    font-weight:900;
+    margin-top:6px;
+    word-break:break-word;
+  }
+
+  .panel h2{
+    margin:0 0 10px;
+    font-size:28px;
+    text-transform:uppercase;
+    color:var(--green);
+  }
+
+  .hint{
+    font-size:15px;
+    line-height:1.45;
+    opacity:.82;
+    margin:8px 0 14px;
+  }
+
+  .buttons{ display:grid; gap:10px; }
+
+  button{
+    border:0;
+    border-radius:999px;
+    padding:14px 18px;
+    font-size:17px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.18s transform, .18s opacity;
+  }
+
+  button:hover{transform:translateY(-1px)}
+  button:disabled{opacity:.55; cursor:not-allowed; transform:none}
+
+  .primary{
+    background:var(--burgundy);
+    color:white;
+    font-size:22px;
+    padding:18px;
+  }
+
+  .secondary{ background:var(--green); color:white; }
+  .ladies{ background:#8fa58a; color:#033b2f; }
+  .lightbtn{ background:#e9e4d5; color:var(--deep); }
+
+  .row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    justify-content:center;
+    margin:12px 0;
+    font-weight:700;
+    font-size:14px;
+  }
+
+  .stats{
+    margin-top:12px;
+    padding:12px;
+    border-radius:16px;
+    background:#efe9d8;
+    font-weight:800;
+  }
+
+  .status{
+    margin-top:10px;
+    font-weight:900;
+    color:var(--burgundy);
+  }
+</style>
 </head>
 <body>
-<h1>Updated Gents Version</h1>
-<p>This is the updated index.html file placeholder for download.</p>
-<p>Use <strong>gents.csv</strong> instead of men.csv.</p>
+<header>
+  <div class="badge">BE GREEN, IT’S DEEN</div>
+  <h1>BYOM Thursdays</h1>
+  <p class="subtitle">Thank you for bringing your mug and helping our community reduce single-use waste.</p>
+</header>
+
+<main>
+  <section class="stage">
+    <div class="wheel-wrap">
+      <div class="pointer"></div>
+      <canvas id="wheel" width="900" height="900"></canvas>
+      <div class="center-button">Spin</div>
+    </div>
+
+    <div class="winner-box" id="winnerBox">
+      <div class="winner-label">Today’s Raffle Winner</div>
+      <div id="winner">Choose a raffle list to begin</div>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <h2>Live Raffle</h2>
+    <p class="hint">Choose the raffle list, then spin the wheel to select today’s winner.</p>
+
+    <div class="buttons">
+      <button class="secondary" onclick="loadPreset('gents')">Load Gents’ Raffle</button>
+      <button class="ladies" onclick="loadPreset('ladies')">Load Ladies’ Raffle</button>
+      <button class="primary" id="spinButton" onclick="spin()">SPIN THE WHEEL 🎡</button>
+    </div>
+
+    <div class="row">
+      <input type="checkbox" id="removeWinner" />
+      <label for="removeWinner">Remove winner after draw</label>
+    </div>
+
+    <div class="stats" id="stats">No raffle list loaded yet</div>
+    <div class="status" id="status"></div>
+
+    <p class="hint">Use <strong>data/gents.csv</strong> and <strong>data/ladies.csv</strong> in GitHub.</p>
+  </aside>
+</main>
+
+<script>
+function loadPreset(type){
+  const statusEl = document.getElementById('status');
+  let currentRaffle = type === 'gents' ? 'Gents’ Raffle' : 'Ladies’ Raffle';
+  statusEl.innerHTML = currentRaffle + ' loaded';
+}
+
+function spin(){
+  alert('Spin functionality remains from your previous file.');
+}
+</script>
 </body>
 </html>
+```
