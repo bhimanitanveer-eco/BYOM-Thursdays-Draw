@@ -1,278 +1,167 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BYOM Thursday Live Raffle</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BYOM Thursdays Raffle</title>
 <style>
-  :root{
-    --green:#064f3b;
-    --deep:#033b2f;
-    --light:#f7f4ea;
-    --sage:#8fa58a;
-    --gold:#f3c85c;
-    --burgundy:#a9474f;
-    --white:#ffffff;
-  }
-
-  *{box-sizing:border-box}
-
-  body{
-    margin:0;
-    font-family: Arial, Helvetica, sans-serif;
-    background:
-      radial-gradient(circle at top left, rgba(243,200,92,.22), transparent 28%),
-      linear-gradient(135deg, var(--deep), var(--green));
-    color:var(--light);
-    min-height:100vh;
-    text-align:center;
-  }
-
-  header{ padding:28px 18px 14px; }
-
-  .badge{
-    display:inline-block;
-    padding:8px 16px;
-    border:2px solid rgba(255,255,255,.7);
-    border-radius:999px;
-    font-weight:700;
-    letter-spacing:.05em;
-    margin-bottom:10px;
-  }
-
-  h1{
-    margin:8px 0 4px;
-    font-size:clamp(38px, 7vw, 86px);
-    line-height:.9;
-    text-transform:uppercase;
-    letter-spacing:.02em;
-  }
-
-  .subtitle{
-    margin:0 auto;
-    max-width:860px;
-    font-size:clamp(18px, 2.5vw, 30px);
-    font-weight:700;
-  }
-
-  main{
-    width:min(1180px, 96vw);
-    margin:18px auto 40px;
-    display:grid;
-    grid-template-columns: 1fr 390px;
-    gap:24px;
-    align-items:start;
-  }
-
-  .stage, .panel{
-    background:rgba(247,244,234,.94);
-    color:var(--deep);
-    border-radius:28px;
-    box-shadow:0 18px 50px rgba(0,0,0,.28);
-    padding:24px;
-  }
-
-  .stage{
-    position:relative;
-    min-height:680px;
-    overflow:hidden;
-  }
-
-  .wheel-wrap{
-    position:relative;
-    width:min(620px, 88vw);
-    height:min(620px, 88vw);
-    margin:10px auto 20px;
-  }
-
-  canvas#wheel{
-    width:100%;
-    height:100%;
-    border-radius:50%;
-    box-shadow:0 18px 45px rgba(0,0,0,.35);
-    background:var(--light);
-  }
-
-  .pointer{
-    position:absolute;
-    top:-12px;
-    left:50%;
-    transform:translateX(-50%);
-    width:0;
-    height:0;
-    border-left:24px solid transparent;
-    border-right:24px solid transparent;
-    border-top:54px solid var(--burgundy);
-    filter:drop-shadow(0 6px 4px rgba(0,0,0,.35));
-    z-index:4;
-  }
-
-  .center-button{
-    position:absolute;
-    inset:50% auto auto 50%;
-    transform:translate(-50%, -50%);
-    width:130px;
-    height:130px;
-    border-radius:50%;
-    border:8px solid var(--light);
-    background:var(--green);
-    color:var(--light);
-    font-weight:900;
-    font-size:28px;
-    box-shadow:0 8px 22px rgba(0,0,0,.35);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-transform:uppercase;
-  }
-
-  .winner-box{
-    background:linear-gradient(135deg, var(--green), var(--deep));
-    color:white;
-    border-radius:22px;
-    padding:18px;
-    min-height:116px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .winner-label{
-    opacity:.9;
-    font-weight:700;
-    letter-spacing:.05em;
-    text-transform:uppercase;
-    font-size:14px;
-  }
-
-  #winner{
-    font-size:clamp(30px, 5vw, 58px);
-    font-weight:900;
-    margin-top:6px;
-    word-break:break-word;
-  }
-
-  .panel h2{
-    margin:0 0 10px;
-    font-size:28px;
-    text-transform:uppercase;
-    color:var(--green);
-  }
-
-  .hint{
-    font-size:15px;
-    line-height:1.45;
-    opacity:.82;
-    margin:8px 0 14px;
-  }
-
-  .buttons{ display:grid; gap:10px; }
-
-  button{
-    border:0;
-    border-radius:999px;
-    padding:14px 18px;
-    font-size:17px;
-    font-weight:900;
-    cursor:pointer;
-    transition:.18s transform, .18s opacity;
-  }
-
-  button:hover{transform:translateY(-1px)}
-  button:disabled{opacity:.55; cursor:not-allowed; transform:none}
-
-  .primary{
-    background:var(--burgundy);
-    color:white;
-    font-size:22px;
-    padding:18px;
-  }
-
-  .secondary{ background:var(--green); color:white; }
-  .ladies{ background:#8fa58a; color:#033b2f; }
-  .lightbtn{ background:#e9e4d5; color:var(--deep); }
-
-  .row{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    justify-content:center;
-    margin:12px 0;
-    font-weight:700;
-    font-size:14px;
-  }
-
-  .stats{
-    margin-top:12px;
-    padding:12px;
-    border-radius:16px;
-    background:#efe9d8;
-    font-weight:800;
-  }
-
-  .status{
-    margin-top:10px;
-    font-weight:900;
-    color:var(--burgundy);
-  }
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(135deg,#033b2f,#064f3b);
+color:white;
+text-align:center;
+}
+.container{
+padding:20px;
+}
+button{
+padding:14px 20px;
+margin:8px;
+border:none;
+border-radius:999px;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+.gents{background:#064f3b;color:white;}
+.ladies{background:#8fa58a;color:#033b2f;}
+.spin{background:#a9474f;color:white;font-size:24px;}
+#winner{
+font-size:48px;
+font-weight:bold;
+margin-top:20px;
+}
+canvas{
+background:#f7f4ea;
+border-radius:50%;
+margin-top:20px;
+width:600px;
+height:600px;
+max-width:90vw;
+max-height:90vw;
+}
 </style>
 </head>
 <body>
-<header>
-  <div class="badge">BE GREEN, IT’S DEEN</div>
-  <h1>BYOM Thursdays</h1>
-  <p class="subtitle">Thank you for bringing your mug and helping our community reduce single-use waste.</p>
-</header>
 
-<main>
-  <section class="stage">
-    <div class="wheel-wrap">
-      <div class="pointer"></div>
-      <canvas id="wheel" width="900" height="900"></canvas>
-      <div class="center-button">Spin</div>
-    </div>
+<div class="container">
+<h1>BYOM Thursdays</h1>
+<p>Live Raffle Draw</p>
 
-    <div class="winner-box" id="winnerBox">
-      <div class="winner-label">Today’s Raffle Winner</div>
-      <div id="winner">Choose a raffle list to begin</div>
-    </div>
-  </section>
+<button class="gents" onclick="loadCSV('gents')">Load Gents’ Raffle</button>
+<button class="ladies" onclick="loadCSV('ladies')">Load Ladies’ Raffle</button>
+<br>
+<button class="spin" onclick="spin()">SPIN THE WHEEL 🎡</button>
 
-  <aside class="panel">
-    <h2>Live Raffle</h2>
-    <p class="hint">Choose the raffle list, then spin the wheel to select today’s winner.</p>
+<div id="winner">Choose a raffle list</div>
 
-    <div class="buttons">
-      <button class="secondary" onclick="loadPreset('gents')">Load Gents’ Raffle</button>
-      <button class="ladies" onclick="loadPreset('ladies')">Load Ladies’ Raffle</button>
-      <button class="primary" id="spinButton" onclick="spin()">SPIN THE WHEEL 🎡</button>
-    </div>
-
-    <div class="row">
-      <input type="checkbox" id="removeWinner" />
-      <label for="removeWinner">Remove winner after draw</label>
-    </div>
-
-    <div class="stats" id="stats">No raffle list loaded yet</div>
-    <div class="status" id="status"></div>
-
-    <p class="hint">Use <strong>data/gents.csv</strong> and <strong>data/ladies.csv</strong> in GitHub.</p>
-  </aside>
-</main>
+<canvas id="wheel" width="800" height="800"></canvas>
+</div>
 
 <script>
-function loadPreset(type){
-  const statusEl = document.getElementById('status');
-  let currentRaffle = type === 'gents' ? 'Gents’ Raffle' : 'Ladies’ Raffle';
-  statusEl.innerHTML = currentRaffle + ' loaded';
+const canvas = document.getElementById('wheel');
+const ctx = canvas.getContext('2d');
+
+let names = [];
+let rotation = 0;
+let spinning = false;
+
+const colors = ['#064f3b','#8fa58a','#f7f4ea','#a9474f','#f3c85c'];
+
+async function loadCSV(type){
+  const response = await fetch('data/' + type + '.csv?' + Date.now());
+  const text = await response.text();
+
+  names = text.split('\n')
+    .slice(1)
+    .map(r => r.trim())
+    .filter(Boolean);
+
+  document.getElementById('winner').innerHTML =
+    (type === 'gents' ? "Gents’" : "Ladies’") + " raffle loaded";
+
+  drawWheel();
+}
+
+function drawWheel(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const cx = canvas.width/2;
+  const cy = canvas.height/2;
+  const radius = 350;
+
+  const total = names.length || 18;
+  const slice = (Math.PI*2)/total;
+
+  ctx.save();
+  ctx.translate(cx,cy);
+  ctx.rotate(rotation);
+
+  for(let i=0;i<total;i++){
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.arc(0,0,radius,i*slice,(i+1)*slice);
+    ctx.closePath();
+
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.fill();
+
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    if(names.length){
+      ctx.save();
+      ctx.rotate(i*slice + slice/2);
+      ctx.textAlign='right';
+      ctx.fillStyle='white';
+      ctx.font='bold 16px Arial';
+      ctx.fillText(names[i].slice(0,18), radius-20, 0);
+      ctx.restore();
+    }
+  }
+
+  ctx.restore();
 }
 
 function spin(){
-  alert('Spin functionality remains from your previous file.');
+  if(spinning || names.length===0) return;
+
+  spinning = true;
+
+  const winnerIndex = Math.floor(Math.random()*names.length);
+  const total = names.length;
+  const slice = (Math.PI*2)/total;
+
+  const target = (Math.PI*12) + (-Math.PI/2) - (winnerIndex*slice + slice/2);
+
+  const start = rotation;
+  const change = target - start;
+  const duration = 5000;
+  const startTime = performance.now();
+
+  function animate(now){
+    const elapsed = now - startTime;
+    const t = Math.min(elapsed/duration,1);
+
+    rotation = start + change * (1 - Math.pow(1-t,3));
+    drawWheel();
+
+    if(t<1){
+      requestAnimationFrame(animate);
+    }else{
+      document.getElementById('winner').innerHTML =
+        '🎉 ' + names[winnerIndex] + ' 🎉';
+      spinning = false;
+    }
+  }
+
+  requestAnimationFrame(animate);
 }
+
+drawWheel();
 </script>
+
 </body>
 </html>
-
