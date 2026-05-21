@@ -364,9 +364,10 @@ function cleanNames(list){
 
 async function loadPreset(type){
   try{
-    const raffleLinks = {
-  gents: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSbLgOAWchYRCm0PVbyNXPls2jeIUOMfsncx8fk7HlFVA8Jdt5IVlN3c08kVW_hx6cOq_erMgn8IYH5/pubhtml?gid=0&single=true",
-  ladies: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSbLgOAWchYRCm0PVbyNXPls2jeIUOMfsncx8fk7HlFVA8Jdt5IVlN3c08kVW_hx6cOq_erMgn8IYH5/pubhtml?gid=1817911782&single=true"
+   const raffleLinks = {
+  gents: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSbLgOAWchYRCm0PVbyNXPls2jeIUOMfsncx8fk7HlFVA8Jdt5IVlN3c08kVW_hx6cOq_erMgn8IYH5/pub?gid=0&single=true&output=csv",
+
+  ladies: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSbLgOAWchYRCm0PVbyNXPls2jeIUOMfsncx8fk7HlFVA8Jdt5IVlN3c08kVW_hx6cOq_erMgn8IYH5/pub?gid=1817911782&single=true&output=csv"
 };
 
 const res = await fetch(raffleLinks[type] + "&cache=" + Date.now());
