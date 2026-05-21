@@ -362,7 +362,12 @@ function cleanNames(list){
 
 async function loadPreset(type){
   try{
-    const res = await fetch("data/" + type + ".csv?cache=" + Date.now());
+    const raffleLinks = {
+  gents: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSbLgOAWchYRCm0PVbyNXPls2jeIUOMfsncx8fk7HlFVA8Jdt5IVlN3c08kVW_hx6cOq_erMgn8IYH5/pubhtml?gid=0&single=true",
+  ladies: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSbLgOAWchYRCm0PVbyNXPls2jeIUOMfsncx8fk7HlFVA8Jdt5IVlN3c08kVW_hx6cOq_erMgn8IYH5/pubhtml?gid=1817911782&single=true"
+};
+
+const res = await fetch(raffleLinks[type] + "&cache=" + Date.now());
     if(!res.ok) throw new Error("CSV not found");
 
     const text = await res.text();
