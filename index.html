@@ -382,7 +382,9 @@ const res = await fetch(raffleLinks[type] + "&cache=" + Date.now());
     document.getElementById("countStatus").innerHTML =
       names.length + " names loaded";
 
-    document.getElementById("winner").innerHTML = "Ready?";
+   const winnerText = document.getElementById("winner");
+winnerText.innerHTML = "Ready?";
+winnerText.style.fontSize = "";
 
     rotation = 0;
     drawWheel();
@@ -560,8 +562,29 @@ function spin(){
 }
 
 function showWinner(index){
-  document.getElementById("winner").innerHTML = names[index];
+  const winnerText = document.getElementById("winner");
+  winnerText.innerHTML = names[index];
+
+  fitWinnerText();
+
   launchConfetti();
+}
+
+  function fitWinnerText(){
+  const winnerText = document.getElementById("winner");
+  const winnerBox = document.querySelector(".winner-box");
+
+  let fontSize = 58;
+  winnerText.style.fontSize = fontSize + "px";
+  winnerText.style.lineHeight = "1.05";
+
+  while (
+    winnerText.scrollHeight > winnerBox.clientHeight - 55 &&
+    fontSize > 22
+  ){
+    fontSize -= 2;
+    winnerText.style.fontSize = fontSize + "px";
+  }
 }
 
 function launchConfetti(){
